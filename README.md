@@ -1,6 +1,6 @@
 # USEF-TSE: Universal Speaker Embedding Free Target Speaker Extraction
 
-[![Paper]📖](https://arxiv.org/pdf/2409.02615)
+[![Paper](https://img.shields.io/badge/Paper-red?&logo=arxiv)](https://arxiv.org/pdf/2409.02615)
 
 Official Implementation of USEF-TSE: Universal Speaker Embedding Free Target Speaker Extraction. 
 
@@ -19,13 +19,6 @@ audio generation into a classification task. Experimental results
 show that TSELM achieves excellent results in speech quality
 and comparable results in speech intelligibility.
 
-
-## Pre-requisites
-
-1. Install [SpeechBrain](https://github.com/speechbrain/speechbrain/tree/main) (We use the Conformer model from it). 
-2. Install all dependencies from `requirements.txt`
-3. Download the encoder(WavLM Large and Kmeans) and decoder(Scalable HiFiGAN) checkpoint. Details can be found in [Model](#pretrained-model) session.
-4. Download the data and run the scripts following [data/README.md](./data/README.md).
 
 ### Pretrained Model
 Befor running experiments, we need to download the following frozen pretrained models.
