@@ -2,9 +2,11 @@
 
 [![Paper](https://img.shields.io/badge/Paper-red?&logo=arxiv)](https://arxiv.org/pdf/2409.02615)
 
-Official Implementation of USEF-TSE: Universal Speaker Embedding Free Target Speaker Extraction. 
+Official Implementation of USEF-TSE: Universal Speaker Embedding Free Target Speaker Extraction.
 
-To refer to the model class, check [exp/tselm/model.py](./exp/tselm/model.py) directly.
+Currently, this repository only provides inference code. The complete training code will be open-sourced after the paper revisions are finalized.
+
+To refer to the model class, check [models](./models/) directly.
 
 ## Abstract
 We propose TSELM, a novel target speaker extraction network that leverages discrete tokens and language models.
