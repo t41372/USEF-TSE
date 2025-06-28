@@ -1,3 +1,42 @@
+"""
+USEF-TSE Inference Script
+
+This script provides a command-line interface for performing target speaker extraction
+using pre-trained USEF-TSE models (SepFormer or TFGridNet).
+
+It takes a mixed audio file (containing the target speaker and other sounds) and a
+reference audio file (a clean sample of the target speaker's voice) as input.
+The script then separates the target speaker's voice from the mixture and saves
+the resulting audio to a specified output file.
+
+The script can automatically download the required model checkpoints from HuggingFace
+if they are not found locally. It supports inference on CPU, CUDA, and MPS (Apple Silicon)
+devices, with optional FP16 precision for performance improvement on GPUs. For very
+long audio files, a segmentation option is available to process the audio in chunks,
+reducing memory consumption.
+
+CLI Usage:
+----------
+For help:
+  python inference.py --help
+
+Basic usage with SepFormer model:
+  python inference.py --type sepformer \\
+                      --mix /path/to/your/mix.wav \\
+                      --ref /path/to/your/ref.wav \\
+                      --out /path/to/output/extracted.wav
+
+Basic usage with TFGridNet model:
+  python inference.py --type tfgridnet \\
+                      --mix /path/to/your/mix.wav \\
+                      --ref /path/to/your/ref.wav \\
+                      --out /path/to/output/extracted.wav
+
+Using segmentation for long audio files (e.g., 10-second chunks) and FP16:
+  python inference.py --type sepformer --mix long_mix.wav --ref ref.wav --out out.wav --segment-sec 10 --fp16
+
+"""
+
 import os
 import time
 import logging
@@ -57,8 +96,6 @@ def load_pretrained_modules(model, ckpt_path):
     model_info = torch.load(ckpt_path, map_location="cpu", weights_only=False)
     state_dict = OrderedDict()
     for k, v in model_info["model_state_dict"].items():
-        # 移除 'module.' 前缀 (在 DataParallel 训练时会自动添加)
-        # 并处理 convolution_ -> convolution_module. 的命名差异
         name = k.replace("module.", "").replace("convolution_", "convolution_module.")
         state_dict[name] = v
     model.load_state_dict(state_dict)
@@ -152,13 +189,13 @@ def main(
         chkpt_path = (
             REPO_DIR / "chkpt" / "USEF-TFGridNet" / "wsj0-2mix" / "temp_best.pth.tar"
         )
-        fetch_url = f"https://huggingface.co/ZBang/USEF-TSE/resolve/main/chkpt/USEF-TFGridNet/wsj0-2mix/temp_best.pth.tar"
+        fetch_url = "https://huggingface.co/ZBang/USEF-TSE/resolve/main/chkpt/USEF-TFGridNet/wsj0-2mix/temp_best.pth.tar"
     elif model_type == ModelType.sepformer:
         config_path = REPO_DIR / "chkpt" / "USEF-SepFormer" / "config.yaml"
         chkpt_path = (
             REPO_DIR / "chkpt" / "USEF-SepFormer" / "wsj0-2mix" / "temp_best.pth.tar"
         )
-        fetch_url = f"https://huggingface.co/ZBang/USEF-TSE/resolve/main/chkpt/USEF-SepFormer/wsj0-2mix/temp_best.pth.tar"
+        fetch_url = "https://huggingface.co/ZBang/USEF-TSE/resolve/main/chkpt/USEF-SepFormer/wsj0-2mix/temp_best.pth.tar"
 
     config_path = str(config_path)
     chkpt_path = str(chkpt_path)

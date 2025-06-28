@@ -16,7 +16,7 @@ uv run inference.py \
 
 
 ```sh
-modal run modal_entry.py \
+uv run modal run modal_entry.py \
     --type tfgridnet \
     --mix /root/USEF-TSE/normal_cocktail_party_test_data.wav \
     --ref /root/USEF-TSE/nana_speaker_vocals.wav \
@@ -24,7 +24,7 @@ modal run modal_entry.py \
 ```
 
 ```sh
-modal run modal_entry.py \
+uv run modal run modal_entry.py \
     --type sepformer \
     --mix /root/USEF-TSE/normal_cocktail_party_test_data.wav \
     --ref /root/USEF-TSE/nana_speaker_vocals.wav \

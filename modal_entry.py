@@ -1,8 +1,9 @@
 # modal_entry.py
+import logging
 import pathlib
 import subprocess
+
 import modal
-import logging
 
 # Configure logging
 logging.basicConfig(
@@ -16,10 +17,12 @@ REPO_ROOT = pathlib.Path(__file__).parent.resolve()
 # 1) Build an image with your project code + deps
 image = (
     modal.Image.debian_slim()  # lightweight base
+    .workdir("/root/USEF-TSE")  # set working directory
     .pip_install_from_pyproject(str(REPO_ROOT / "pyproject.toml"))  # project deps
     .add_local_dir(
         local_path=str(REPO_ROOT),  # copy entire repo
         remote_path="/root/USEF-TSE",  # where it appears inside the container
+        ignore=["*.venv"],
         # keep_git=True  # optional: include .git
     )
 )
@@ -50,7 +53,7 @@ def run_inference(model_type: str, mix: str, ref: str, out: str = "/output/outpu
 
     cmd = [
         "python",
-        "/root/USEF-TSE/inference.py",
+        "inference.py",
         "--type",
         model_type,
         "--mix",
@@ -60,7 +63,7 @@ def run_inference(model_type: str, mix: str, ref: str, out: str = "/output/outpu
         "--out",
         out,  # output path inside the container
     ]
-    
+
     vol_output.commit()
 
     try:
@@ -75,8 +78,8 @@ def run_inference(model_type: str, mix: str, ref: str, out: str = "/output/outpu
 @app.local_entrypoint()
 def main(
     type: str = "tfgridnet",
-    mix: str = "./normal_cocktail_party_test_data.wav",
-    ref: str = "./nana_speaker_vocals.wav",
+    mix: str = "./mix.wav",
+    ref: str = "./enrollment.wav",
     out: str = "/output/output.wav",
 ):
     """
