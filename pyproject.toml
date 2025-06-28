@@ -1,0 +1,22 @@
+[project]
+name = "usef-tse"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "torchaudio",
+    "numpy",
+    "tqdm",
+    "mir-eval",
+    "hyperpyyaml",
+    "librosa",
+    "scipy",
+    "python-speech-features",
+    "pesq>=0.0.4",
+    "ruff>=0.12.1",
+    "pyrefly>=0.21.0",
+    "typer>=0.16.0",
+    "modal>=1.0.5",
+]
