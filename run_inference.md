@@ -14,3 +14,19 @@ uv run inference.py \
     --out ./test_data/output.wav
 ```
 
+
+```sh
+modal run modal_entry.py \
+    --type tfgridnet \
+    --mix /root/USEF-TSE/normal_cocktail_party_test_data.wav \
+    --ref /root/USEF-TSE/nana_speaker_vocals.wav \
+    --out /output/output_tfgridnet.wav
+```
+
+```sh
+modal run modal_entry.py \
+    --type sepformer \
+    --mix /root/USEF-TSE/normal_cocktail_party_test_data.wav \
+    --ref /root/USEF-TSE/nana_speaker_vocals.wav \
+    --out /output/output_sepformer.wav
+```
